@@ -1,0 +1,23 @@
+{
+ "status": 200,
+ "body": {
+  "version_id": "91818e4b-7017-4996-9376-748a684a583f",
+  "id": "probe_filter",
+  "user_id": "REDACTED-user-id",
+  "name": "Probe Filter",
+  "type": "filter",
+  "content": "\"\"\"\ntitle: Probe Filter\nversion: 0.2.0\n\"\"\"\nfrom pydantic import BaseModel\nfrom open_webui.utils.misc import get_last_user_message\n\n\nclass Filter:\n    class Valves(BaseModel):\n        api_key: str = \"\"\n        priority: int = 0\n\n    class UserValves(BaseModel):\n        enabled: bool = True\n\n    def __init__(self):\n        self.valves = self.Valves()\n\n    def inlet(self, body: dict, __user__: dict | None = None) -> dict:\n        return body\n",
+  "meta": {
+   "description": "v2",
+   "manifest": {
+    "title": "Probe Filter",
+    "version": "0.2.0"
+   },
+   "toggle": false
+  },
+  "is_active": true,
+  "is_global": true,
+  "updated_at": 1794477106,
+  "created_at": 1794477106
+ }
+}

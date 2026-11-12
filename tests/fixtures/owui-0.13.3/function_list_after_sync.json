@@ -1,0 +1,23 @@
+{
+ "status": 200,
+ "body": [
+  {
+   "version_id": "7841ce62-05ac-4845-918d-17f1a8c9858c",
+   "id": "probe_action",
+   "user_id": "REDACTED-user-id",
+   "type": "action",
+   "name": "Probe Action",
+   "meta": {
+    "description": "a",
+    "manifest": {
+     "title": "Probe Action"
+    },
+    "toggle": false
+   },
+   "is_active": true,
+   "is_global": false,
+   "updated_at": 1794477106,
+   "created_at": 0
+  }
+ ]
+}

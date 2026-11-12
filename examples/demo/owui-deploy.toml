@@ -1,0 +1,18 @@
+# Demo configuration for `owui-deploy plan --config examples/demo/owui-deploy.toml --fake`
+[server]
+url = "http://localhost:8080"   # ignored with --fake; OWUI_URL and --url take precedence
+
+[paths]
+tools = "tools"
+functions = "functions"
+
+[defaults]
+active = true     # deploy everything switched on unless said otherwise
+global = false
+
+[functions.pii_mask]
+global = true     # a Filter that should run for every model
+
+[functions.shout_action]
+name = "Shout"
+description = "Add a button that repeats the last answer in capital letters"

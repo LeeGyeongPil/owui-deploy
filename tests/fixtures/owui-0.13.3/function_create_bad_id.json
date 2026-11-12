@@ -1,0 +1,6 @@
+{
+ "status": 400,
+ "body": {
+  "detail": "Only alphanumeric characters and underscores are allowed in the id"
+ }
+}

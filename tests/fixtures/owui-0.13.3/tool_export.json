@@ -1,0 +1,37 @@
+{
+ "status": 200,
+ "body": [
+  {
+   "version_id": "40196849-cf9a-49da-a8ac-0655089d2ad9",
+   "id": "probe_clock",
+   "user_id": "REDACTED-user-id",
+   "name": "Probe Clock",
+   "content": "\"\"\"\ntitle: Probe Clock\nauthor: probe\nversion: 0.2.0\nrequirements:\n\"\"\"\nfrom pydantic import BaseModel, Field\n\n\nclass Tools:\n    class Valves(BaseModel):\n        tz: str = Field(default=\"UTC\", description=\"Time zone\")\n\n    def __init__(self):\n        self.valves = self.Valves()\n\n    def now(self) -> str:\n        \"\"\"Return a fixed string for the probe.\"\"\"\n        return \"12:00 \" + self.valves.tz\n",
+   "specs": [
+    {
+     "name": "now",
+     "description": "Return a fixed string for the probe.",
+     "parameters": {
+      "properties": {},
+      "type": "object"
+     }
+    }
+   ],
+   "meta": {
+    "i18n": null,
+    "description": "probe tool v2",
+    "manifest": {
+     "title": "Probe Clock",
+     "author": "probe",
+     "version": "0.2.0",
+     "requirements": ""
+    },
+    "has_user_valves": false
+   },
+   "is_active": false,
+   "access_grants": [],
+   "updated_at": 1794477106,
+   "created_at": 1794477106
+  }
+ ]
+}

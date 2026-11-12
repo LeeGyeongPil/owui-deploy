@@ -1,0 +1,6 @@
+{
+ "status": 400,
+ "body": {
+  "detail": "Uh-oh! This id is already registered. Please choose another id string."
+ }
+}

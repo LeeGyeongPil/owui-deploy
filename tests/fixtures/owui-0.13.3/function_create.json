@@ -1,0 +1,22 @@
+{
+ "status": 200,
+ "body": {
+  "version_id": "ec3dc621-fdd2-4be9-bbfe-d2f165f17236",
+  "id": "probe_filter",
+  "user_id": "REDACTED-user-id",
+  "type": "filter",
+  "name": "Probe Filter",
+  "meta": {
+   "description": "probe filter",
+   "manifest": {
+    "title": "Probe Filter",
+    "version": "0.1.0"
+   },
+   "toggle": false
+  },
+  "is_active": false,
+  "is_global": false,
+  "updated_at": 1794477106,
+  "created_at": 1794477106
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "status": 200,
+ "body": {
+  "version_id": "7ffb791f-ba03-4884-b7fb-405161dcd907",
+  "id": "probe_clock",
+  "user_id": "REDACTED-user-id",
+  "name": "Probe Clock",
+  "meta": {
+   "i18n": null,
+   "description": "probe tool",
+   "manifest": {
+    "title": "Probe Clock",
+    "author": "probe",
+    "version": "0.1.0",
+    "requirements": ""
+   },
+   "has_user_valves": false
+  },
+  "is_active": true,
+  "access_grants": [],
+  "updated_at": 1794477106,
+  "created_at": 1794477106
+ }
+}
