@@ -1,0 +1,40 @@
+[project]
+name = "owui-deploy"
+version = "0.1.0"
+description = "Lint, plan and apply Open WebUI Tools and Functions from a git folder (no code execution, idempotent, CI-friendly exit codes)."
+authors = [
+    { name = "LeeGyeongPil", email = "50697071+LeeGyeongPil@users.noreply.github.com" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["open-webui", "openwebui", "llm", "deploy", "lint", "gitops", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = ["httpx==0.28.1"]
+
+[project.urls]
+Homepage = "https://github.com/LeeGyeongPil/owui-deploy"
+Issues = "https://github.com/LeeGyeongPil/owui-deploy/issues"
+
+[project.scripts]
+owui-deploy = "owui_deploy.cli:main"
+
+[dependency-groups]
+dev = ["pytest==9.2.0"]
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
