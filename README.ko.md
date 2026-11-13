@@ -193,6 +193,8 @@ name = "Shout"
 description = "Add a button that repeats the last answer in capital letters"
 ```
 
+설정 키는 대소문자를 구분하지 않으며(서버 id 처럼 소문자로 맞춤), 대소문자만 다른 중복 키는 설정 오류입니다.
+
 이름은 설정, 없으면 파일 첫 docstring 의 `title:`, 그것도 없으면 id 입니다. 동작하는 예는 `examples/demo/` 에 있습니다.
 
 | 변수 | 용도 |
@@ -295,7 +297,7 @@ uv run owui-deploy --lang ko plan --config examples/demo/owui-deploy.toml --fake
 
 - 이럴 때: 직접 만든 Tools·Functions 를 git 에 두고 lint, 리뷰할 수 있는 plan, 반복해도 같은 apply 를 원할 때.
 - 다른 일에는 다른 도구: 아래 [다른 도구와 비교](#다른-도구와-비교) 를 보세요.
-- 0.1.0 에서 다루지 않는 것: valves 값, 한 설정의 여러 환경, 이력·롤백, Models·Prompts·Knowledge.
+- 0.1.1 에서 다루지 않는 것: valves 값, 한 설정의 여러 환경, 이력·롤백, Models·Prompts·Knowledge.
 
 ## 다른 도구와 비교
 
@@ -307,7 +309,7 @@ uv run owui-deploy --lang ko plan --config examples/demo/owui-deploy.toml --fake
 | [owui-cli](https://github.com/rndmcnlly/owui-cli) 0.7.1 | Open WebUI 여러 리소스용 명령형 CLI: `tools deploy file.py`(없으면 생성, 있으면 수정), `pull-all`, `valves-set` | 있음, 명령 하나에 파일 하나(owui-deploy 와 겹치는 부분) | 없음 | 없음 | 없음 |
 | [owui-client](https://pypi.org/project/owui-client/) 11.0.0 | 직접 만드는 스크립트용, 전체 API 비동기 Python 클라이언트 | 직접 짠 코드로(`create`·`update`, `sync_functions`) | 없음 | 없음 | 직접 짠 코드로 |
 | [suurt8ll/open_webui_functions](https://github.com/suurt8ll/open_webui_functions) `dev/function_updater.py` | 한 레포 전용 개발 스크립트: `FILEPATHS` 에 적은 파일을 올리고 변경을 감시 | 있음, 그 레포에 한해 | 없음 | 없음 | 없음 |
-| owui-deploy 0.1.0 (이 레포) | 선언형 `lint`·`plan`·`apply`·`pull` | 있음, 폴더 전체 | 있음(`plan`, `--diff`, `--json`, 차이가 있으면 종료 1) | 있음(`lint`, OWD001~OWD009) | 있음 |
+| owui-deploy 0.1.1 (이 레포) | 선언형 `lint`·`plan`·`apply`·`pull` | 있음, 폴더 전체 | 있음(`plan`, `--diff`, `--json`, 차이가 있으면 종료 1) | 있음(`lint`, OWD001~OWD009) | 있음 |
 
 참고:
 

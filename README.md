@@ -193,6 +193,8 @@ name = "Shout"
 description = "Add a button that repeats the last answer in capital letters"
 ```
 
+Config keys are case-insensitive (matched in lowercase, like server ids), and two keys that differ only in case are a config error.
+
 The name comes from the config, else the `title:` in the file's first docstring, else the id. A working copy is in `examples/demo/`.
 
 | Variable | Use |
@@ -295,7 +297,7 @@ See [README.ko.md](README.ko.md) for the Korean screenshots.
 
 - Good fit: your own Tools and Functions live in git and you want lint, a reviewable plan and a repeatable apply.
 - Different tools for other jobs: see [Compared with other tools](#compared-with-other-tools) below.
-- Not covered in 0.1.0: valves values, several environments in one config, history and rollback, Models, Prompts and Knowledge.
+- Not covered in 0.1.1: valves values, several environments in one config, history and rollback, Models, Prompts and Knowledge.
 
 ## Compared with other tools
 
@@ -307,7 +309,7 @@ The short version: owui-cli is an **imperative** tool (you run one command per f
 | [owui-cli](https://github.com/rndmcnlly/owui-cli) 0.7.1 | Imperative CLI for many Open WebUI resources: `tools deploy file.py` (create or update), `pull-all`, `valves-set` | Yes, one file per command (this overlaps with owui-deploy) | No | No | No |
 | [owui-client](https://pypi.org/project/owui-client/) 11.0.0 | Async Python client for the whole API, for your own scripts | Through your own code (`create`/`update`, `sync_functions`) | No | No | Through your own code |
 | [suurt8ll/open_webui_functions](https://github.com/suurt8ll/open_webui_functions) `dev/function_updater.py` | Development script inside one repository: uploads the files listed in `FILEPATHS`, watches for changes | Yes, for that repository | No | No | No |
-| owui-deploy 0.1.0 (this repo) | Declarative `lint` / `plan` / `apply` / `pull` | Yes, a whole folder | Yes (`plan`, `--diff`, `--json`, exit code 1 on drift) | Yes (`lint`, OWD001-OWD009) | Yes |
+| owui-deploy 0.1.1 (this repo) | Declarative `lint` / `plan` / `apply` / `pull` | Yes, a whole folder | Yes (`plan`, `--diff`, `--json`, exit code 1 on drift) | Yes (`lint`, OWD001-OWD009) | Yes |
 
 Notes:
 
