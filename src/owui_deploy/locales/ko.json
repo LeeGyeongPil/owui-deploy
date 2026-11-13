@@ -101,7 +101,7 @@
   "pull.summary": "내려받기: {written}건 썼고, {unchanged}건은 같고, {kept}건은 유지했습니다.",
   "pull.config_written": "설정 파일을 만들었습니다: {path}",
   "pull.config_kept": "기존 설정 파일을 유지했습니다 (덮어쓰지 않습니다): {path}",
-  "pull.state_diff": "설정이 서버와 다릅니다: {text}",
+  "pull.state_diff": "설정이 서버와 다릅니다: {item} ({field}: 설정 {want}, 서버 {have})",
   "pull.valves_dropped": "valves 값 {n}개를 쓰지 않았습니다 (비밀은 서버에만 남습니다).",
   "pull.valves_note": "Valves(설정과 비밀)는 내려받지 않습니다. 서버에만 남습니다."
 }

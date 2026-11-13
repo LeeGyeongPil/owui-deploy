@@ -283,8 +283,9 @@ def cmd_pull(args: argparse.Namespace) -> int:
         print(t("pull.config_written", path=str(result.config_written)))
     if result.config_kept:
         print(t("pull.config_kept", path=str(result.config_kept)))
-        for line in result.state_differences:
-            print(t("pull.state_diff", text=line))
+        for kind, item_id, field_name, want, have in result.state_differences:
+            print(t("pull.state_diff", item=f"{kind}:{item_id}", field=field_name,
+                    want=str(want).lower(), have=str(have).lower()))
     if result.valves_dropped:
         print(t("pull.valves_dropped", n=result.valves_dropped))
     else:

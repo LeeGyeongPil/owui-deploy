@@ -101,7 +101,7 @@
   "pull.summary": "Pull: {written} written, {unchanged} unchanged, {kept} kept.",
   "pull.config_written": "wrote config file {path}",
   "pull.config_kept": "kept existing config file {path} (not overwritten)",
-  "pull.state_diff": "config differs from the server: {text}",
+  "pull.state_diff": "config differs from the server: {item} ({field}: config {want}, server {have})",
   "pull.valves_dropped": "{n} valves values were not written (secrets stay on the server).",
   "pull.valves_note": "Valves (settings and secrets) are not exported; they stay on the server."
 }

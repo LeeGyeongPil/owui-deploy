@@ -73,7 +73,7 @@ def test_pull_keeps_existing_config(tmp_path, capsys):
     text = capsys.readouterr().out
     assert config.read_text(encoding="utf-8") == original  # never overwritten
     assert "kept existing config file" in text
-    assert "config differs from the server: function:legacy_filter active False -> server True" in text
+    assert "config differs from the server: function:legacy_filter (active: config false, server true)" in text
     # a differing local file is kept unless --force is given
     target = out / "tools" / "clock.py"
     target.write_text("# my local edit\n", encoding="utf-8")
@@ -92,3 +92,18 @@ def test_pull_skips_unsafe_ids(tmp_path):
         result = pull(client, out, out / "owui-deploy.toml", url=None)
     assert result.invalid_ids == ["../evil"]
     assert not (tmp_path / "evil.py").exists()
+
+
+def test_pull_state_diff_is_translated_ko(tmp_path, capsys):
+    out = tmp_path / "owui"
+    out.mkdir()
+    # active differs for every seeded item; global differs for Functions (config default true)
+    (out / "owui-deploy.toml").write_text("[defaults]\nactive = false\nglobal = true\n", encoding="utf-8")
+    assert cli.main(["pull", "--lang", "ko", "--fake", "--out", str(out)]) == 0
+    text = capsys.readouterr().out
+    assert "설정이 서버와 다릅니다: function:legacy_filter (active: 설정 false, 서버 true)" in text
+    diff_lines = [ln for ln in text.splitlines() if ln.startswith("설정이 서버와 다릅니다")]
+    assert diff_lines
+    assert any("(global: 설정 true, 서버 false)" in ln for ln in diff_lines)
+    for ln in diff_lines:
+        assert "True" not in ln and "False" not in ln and "server" not in ln and "->" not in ln

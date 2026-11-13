@@ -21,7 +21,8 @@ class PullResult:
     valves_dropped: int = 0
     config_written: Path | None = None
     config_kept: Path | None = None
-    state_differences: list[str] = field(default_factory=list)
+    # (kind, id, field 'active'|'global', config value, server value); rendered by the CLI
+    state_differences: list[tuple[str, str, str, bool, bool]] = field(default_factory=list)
 
 
 def _toml_str(value: str) -> str:
@@ -87,11 +88,11 @@ def pull(client: OpenWebUIClient, out: Path, config_path: Path, url: str | None,
                 override = cfg.overrides[section[kind]].get(entry["id"], {})
                 want_active = override.get("active", cfg.default_active)
                 if bool(entry.get("is_active")) != want_active:
-                    result.state_differences.append(f"{kind}:{entry['id']} active {want_active} -> server {bool(entry.get('is_active'))}")
+                    result.state_differences.append((kind, entry["id"], "active", want_active, bool(entry.get("is_active"))))
                 if kind == "function":
                     want_global = override.get("global", cfg.default_global)
                     if bool(entry.get("is_global")) != want_global:
-                        result.state_differences.append(f"{kind}:{entry['id']} global {want_global} -> server {bool(entry.get('is_global'))}")
+                        result.state_differences.append((kind, entry["id"], "global", want_global, bool(entry.get("is_global"))))
     else:
         config_path.parent.mkdir(parents=True, exist_ok=True)
         config_path.write_text(render_config(url, exported), encoding="utf-8")
