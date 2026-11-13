@@ -3,6 +3,11 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-11-13
+
+### Fixed
+- `pull` now translates the "config differs from the server" line (`--lang ko` showed Python `True`/`False` and the English word `server`) and uses lower-case `true`/`false` like `plan`. This is the only English output change: `config differs from the server: function:pii_mask active True -> server False` is now `config differs from the server: function:pii_mask (active: config true, server false)`. All other English output is unchanged.
+
 ## [0.1.1] - 2026-11-13
 
 ### Fixed
@@ -19,3 +24,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `--fake`: built-in practice mock of Open WebUI 0.13.3 behaviour.
 - English and Korean output (`--lang`, `OWUI_DEPLOY_LANG`).
 - Exit codes: 0 no difference, 1 difference or problem found, 2 tool error.
+
+[0.1.2]: https://github.com/LeeGyeongPil/owui-deploy/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/LeeGyeongPil/owui-deploy/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/LeeGyeongPil/owui-deploy/releases/tag/v0.1.0
