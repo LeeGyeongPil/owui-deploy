@@ -29,6 +29,8 @@ class Config:
     default_global: bool = False
     explicit_paths: set[str] = field(default_factory=set)  # "tools"/"functions" keys set in [paths]
     overrides: dict[str, dict[str, dict]] = field(default_factory=lambda: {"tools": {}, "functions": {}})
+    # lowercased id -> key exactly as written in the config (for messages)
+    written_keys: dict[str, dict[str, str]] = field(default_factory=lambda: {"tools": {}, "functions": {}})
 
 
 @dataclass(frozen=True)
@@ -112,7 +114,19 @@ def load_config(path: Path) -> Config:
                 if not isinstance(value, expected):
                     kind_text = "string" if expected is str else "true/false"
                     raise ConfigError(t("config.bad_type", where=f"{section}.{item_id}.{key}", expected=kind_text))
-            cfg.overrides[section][item_id] = dict(values)
+            norm_id = item_id.lower()  # the server lowercases ids, so config keys must match
+            if norm_id in cfg.overrides[section]:
+                raise ConfigError(
+                    t(
+                        "config.duplicate_key",
+                        where=f"[{section}]",
+                        first=cfg.written_keys[section][norm_id],
+                        second=item_id,
+                        id=norm_id,
+                    )
+                )
+            cfg.overrides[section][norm_id] = dict(values)
+            cfg.written_keys[section][norm_id] = item_id
     return cfg
 
 
@@ -171,5 +185,6 @@ def build_desired(cfg: Config) -> tuple[list[DesiredItem], list[Skipped]]:
             )
         stale = set(cfg.overrides[section]) - set(seen)
         for item_id in sorted(stale):
-            skipped.append(Skipped(kind, folder / f"{item_id}.py", "skip.config_without_file", {"id": item_id}))
+            written = cfg.written_keys[section].get(item_id, item_id)
+            skipped.append(Skipped(kind, folder / f"{item_id}.py", "skip.config_without_file", {"id": written}))
     return items, skipped

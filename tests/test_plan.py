@@ -1,8 +1,14 @@
 import json
+import os
+import shutil
+import subprocess
+import sys
 
-from helpers import demo_project, make_plan
+import pytest
+from helpers import EXAMPLES, demo_project, make_plan
 from owui_deploy import cli
-from owui_deploy.config import load_config
+from owui_deploy.config import build_desired, load_config
+from owui_deploy.errors import ConfigError
 from owui_deploy.fake import SEED_PII_MASK, FakeOpenWebUI
 
 
@@ -91,3 +97,61 @@ def test_invalid_file_names_are_skipped_and_reported(tmp_path, capsys):
     assert cli.main(["plan", "--config", str(config), "--fake"]) == 1
     out = capsys.readouterr().out
     assert "! skip" in out and "Bad-Name" in out and "1 skipped" in out
+
+
+# --- config keys are case-insensitive (ids are lowercased by the server) ---
+
+
+def _mixed_case_project(tmp_path, toml_text):
+    (tmp_path / "functions").mkdir()
+    shutil.copy(EXAMPLES / "demo" / "functions" / "shout_action.py", tmp_path / "functions" / "MyShout.py")
+    cfg_path = tmp_path / "owui-deploy.toml"
+    cfg_path.write_text(toml_text, encoding="utf-8")
+    return cfg_path
+
+
+def test_mixed_case_config_key_applies_global(tmp_path):
+    cfg = load_config(_mixed_case_project(tmp_path, "[functions.MyShout]\nglobal = true\n"))
+    items, skipped = build_desired(cfg)
+    assert skipped == []
+    assert [(i.id, i.is_global) for i in items] == [("myshout", True)]
+
+
+def test_mixed_case_duplicate_keys_are_a_config_error(tmp_path):
+    path = _mixed_case_project(tmp_path, "[functions.MyShout]\nglobal = true\n[functions.myshout]\nactive = false\n")
+    with pytest.raises(ConfigError) as err:
+        load_config(path)
+    assert "MyShout" in str(err.value) and "myshout" in str(err.value)
+
+
+def test_mixed_case_duplicate_keys_exit_two(tmp_path):
+    path = _mixed_case_project(tmp_path, "[functions.MyShout]\n[functions.myshout]\n")
+    env = {**os.environ, "LANG": "C", "OWUI_DEPLOY_LANG": "en"}
+    proc = subprocess.run(
+        [sys.executable, "-m", "owui_deploy", "plan", "--config", str(path), "--fake"],
+        capture_output=True, text=True, env=env, cwd=tmp_path, timeout=60,
+    )
+    assert proc.returncode == 2
+
+
+def test_config_key_without_file_is_still_reported_with_written_key(tmp_path):
+    cfg = load_config(_mixed_case_project(tmp_path, "[functions.MyShout]\n[functions.Ghost]\n"))
+    _, skipped = build_desired(cfg)
+    assert [(s.reason_key, s.params["id"]) for s in skipped] == [("skip.config_without_file", "Ghost")]
+
+
+def test_mixed_case_key_apply_then_plan_is_clean(tmp_path):
+    path = _mixed_case_project(tmp_path, "[functions.MyShout]\nglobal = true\n")
+    env = {**os.environ, "LANG": "C", "OWUI_DEPLOY_LANG": "en"}
+
+    def run(*args):
+        return subprocess.run(
+            [sys.executable, "-m", "owui_deploy", *args, "--config", str(path), "--fake"],
+            capture_output=True, text=True, env=env, cwd=tmp_path, timeout=60,
+        )
+
+    applied = run("apply", "--yes")
+    assert applied.returncode == 0, applied.stdout + applied.stderr
+    state = json.loads((tmp_path / ".owui-deploy-fake.json").read_text(encoding="utf-8"))
+    assert "true" in json.dumps(state).lower()
+    assert run("plan").returncode == 0

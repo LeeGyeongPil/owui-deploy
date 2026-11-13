@@ -38,6 +38,7 @@
   "config.invalid_toml": "cannot read {path}: {detail}",
   "config.unknown_key": "unknown key(s) in {where}: {keys}",
   "config.bad_type": "{where} must be {expected}",
+  "config.duplicate_key": "{where} declares \"{first}\" and \"{second}\", which are the same id \"{id}\" (ids are lowercased). Keep only one of them.",
   "config.not_table": "{where} must be a table",
 
   "field.content": "content",
