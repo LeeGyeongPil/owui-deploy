@@ -1,6 +1,6 @@
 [project]
 name = "owui-deploy"
-version = "0.1.0"
+version = "0.1.1"
 description = "Lint, plan and apply Open WebUI Tools and Functions from a git folder (no code execution, idempotent, CI-friendly exit codes)."
 authors = [
     { name = "LeeGyeongPil", email = "50697071+LeeGyeongPil@users.noreply.github.com" }
