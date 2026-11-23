@@ -3,6 +3,11 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.1.3] - 2026-11-23
+
+### Fixed
+- `pull` now quotes non-ASCII or otherwise non-bare ids in TOML table headers (`[tools."시계"]`), so the generated config parses and `plan`/`lint` no longer exit 2.
+
 ## [0.1.2] - 2026-11-13
 
 ### Fixed
