@@ -107,3 +107,20 @@ def test_pull_state_diff_is_translated_ko(tmp_path, capsys):
     assert any("(global: 설정 true, 서버 false)" in ln for ln in diff_lines)
     for ln in diff_lines:
         assert "True" not in ln and "False" not in ln and "server" not in ln and "->" not in ln
+
+
+def test_render_config_quotes_non_bare_ids():
+    import tomllib
+
+    from owui_deploy.pull import render_config
+
+    entries = {
+        "tool": [{"id": "시계", "name": "Korean Clock", "content": "", "is_active": True},
+                 {"id": "clock", "name": "Other Name", "content": "", "is_active": True}],
+        "function": [],
+    }
+    text = render_config(None, entries)
+    assert '[tools."시계"]' in text and "[tools.clock]" in text
+    parsed = tomllib.loads(text)
+    assert parsed["tools"]["시계"]["name"] == "Korean Clock"
+    assert parsed["tools"]["clock"]["name"] == "Other Name"

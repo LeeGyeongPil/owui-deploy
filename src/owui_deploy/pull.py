@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -23,6 +24,9 @@ class PullResult:
     config_kept: Path | None = None
     # (kind, id, field 'active'|'global', config value, server value); rendered by the CLI
     state_differences: list[tuple[str, str, str, bool, bool]] = field(default_factory=list)
+
+
+_BARE_KEY = re.compile(r"^[A-Za-z0-9_-]+$")
 
 
 def _toml_str(value: str) -> str:
@@ -46,7 +50,8 @@ def render_config(url: str | None, entries: dict[str, list[dict]]) -> str:
             if section == "functions" and entry.get("is_global"):
                 override["global"] = "true"
             if override:
-                lines.append(f"[{section}.{entry['id']}]")
+                key = entry["id"] if _BARE_KEY.match(entry["id"]) else _toml_str(entry["id"])
+                lines.append(f"[{section}.{key}]")
                 lines.extend(f"{k} = {v}" for k, v in override.items())
                 lines.append("")
     return "\n".join(lines).rstrip() + "\n"
